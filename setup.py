@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='obelixtools',
-    version='1.0.0',
+    version='1.1.0',
     author='Christian Lölkes',
     author_email='christian.loelkes@gmail.com',
     description='Useful tools I need in many projects.',

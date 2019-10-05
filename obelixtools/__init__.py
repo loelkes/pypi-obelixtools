@@ -141,11 +141,3 @@ class API(object):
 def human_readable(bytes, units=[' bytes','KB','MB','GB','TB', 'PB', 'EB']):
     """ Returns a human readable string reprentation of bytes"""
     return str(bytes) + units[0] if bytes < 1024 else human_readable(bytes>>10, units[1:])
-
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
-    logger.info('Script is executed as standalone file.')
-    test = API()
-    test.checkConnection()
-    test.speedtest()
