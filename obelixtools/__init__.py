@@ -10,9 +10,30 @@ logger = logging.getLogger(__name__)
 class API(object):
     def __init__(self, url=None, format=None, user=None, key=None):
         self.setupRequests(url=url, user=user, key=key)
+        self.available_formats = ['json', 'xml', 'raw']
         self.format = format
 
     def setupRequests(self, url, user=None, key=None, rateLimit=3600, api_suffix=''):
+    @property
+    def url(self):
+        return self._url
+
+    @url.setter
+    def url(self, value):
+        self.lastUpdate = 0
+        self._url = value;
+
+    @property
+    def format(self):
+        return self._format
+
+    @format.setter
+    def format(self, value):
+        if value not in self.available_formats:
+            logger.warning('Unknown API format {}. Using raw instead'.format(value))
+            self._format = 'raw'
+        else:
+            self._format = value
         """
         Setup the request parameters.
 
@@ -32,9 +53,8 @@ class API(object):
             String to append to the URL for the request. Example: '&page=1'
 
         """
-        self.api_url = url
+        self.url = url
         self.rateLimit = rateLimit
-        self.lastUpdate = 0
         self.api_suffix = ''
         self.request_url = ''
         self.status = False
@@ -47,7 +67,7 @@ class API(object):
         The self.query() will use the self.request_url. It can be modified here.
 
         """
-        self.request_url = self.api_url
+        self.request_url = self.url
         pass
 
     def postQuery(self):
