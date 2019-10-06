@@ -10,5 +10,5 @@ logging.basicConfig(
 if __name__ is '__main__':
     logger = logging.getLogger(__name__)
     test = API()
-    test.checkConnection()
+    test.check_connection()
     test.speedtest()

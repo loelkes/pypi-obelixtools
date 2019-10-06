@@ -8,12 +8,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 class API(object):
-    def __init__(self, url=None, format=None, user=None, key=None):
-        self.setupRequests(url=url, user=user, key=key)
+    def __init__(self, url=None, format='raw', user=None, key=None):
         self.available_formats = ['json', 'xml', 'raw']
+        self._setup_requests(url=url, user=user, key=key)
         self.format = format
 
-    def setupRequests(self, url, user=None, key=None, rateLimit=3600, api_suffix=''):
     @property
     def url(self):
         return self._url
@@ -34,6 +33,9 @@ class API(object):
             self._format = 'raw'
         else:
             self._format = value
+
+
+    def _setup_requests(self, url, user=None, key=None, rateLimit=3600, api_suffix=''):
         """
         Setup the request parameters.
 
@@ -58,7 +60,7 @@ class API(object):
         self.api_suffix = ''
         self.request_url = ''
         self.status = False
-        self.auth = requests.auth.HTTPBasicAuth(user, key) if user and key else None
+        self._auth = requests.auth.HTTPBasicAuth(user, key) if user and key else None
 
     def preQuery(self):
         """
@@ -85,7 +87,7 @@ class API(object):
 
     def stream(self):
         try:
-            response = requests.get(self.request_url, auth=self.auth, stream=True)
+            response = requests.get(self.request_url, auth=self._auth, stream=True)
         except Excpetion as e:
             logging.warning(e)
             pass
@@ -111,13 +113,13 @@ class API(object):
             self.status = False
             self.preQuery()
             try:
-                response = requests.get(url or self.request_url, auth=self.auth)
+                response = requests.get(url or self.request_url, auth=self._auth)
             except Exception as e:
                 logger.warning(e)
                 return self.status
             self.lastUpdate += 5 if response.status_code == 202 else 0
             if response.status_code == 200:
-                self.handleResponse(response)
+                self._handle_response(response)
                 self.postQuery()
             else:
                 pass
@@ -125,7 +127,7 @@ class API(object):
             self.postQuery()
         return self.status
 
-    def handleResponse(self, response):
+    def _handle_response(self, response):
         if self.format == 'json':
             self.content = response.json()
         elif self.format == 'xml':
@@ -138,7 +140,7 @@ class API(object):
     def update(self):
         pass
 
-    def checkConnection(self, url='https://1.1.1.1', timeout=5):
+    def check_connection(self, url='https://1.1.1.1', timeout=5):
         logger.info('Performing selftest with {}'.format(url))
         if self.query(url):
             logger.info('Connected to the internet.')
