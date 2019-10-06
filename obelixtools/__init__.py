@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import time
 import json
 import requests
@@ -89,7 +92,7 @@ class API(object):
         try:
             response = requests.get(self.request_url, auth=self._auth, stream=True)
         except Excpetion as e:
-            logging.warning(e)
+            logger.warning(e)
             pass
         if response.status_code == 200:
             self.content = None
@@ -121,6 +124,8 @@ class API(object):
             if response.status_code == 200:
                 self._handle_response(response)
                 self.postQuery()
+                self.lastUpdate = time.time()
+                self.status = True
             else:
                 pass
         else:
@@ -134,8 +139,6 @@ class API(object):
             self.content = ET.fromstring(response.content)
         else:
             self.content = response.content
-        self.lastUpdate = time.time()
-        self.status = True
 
     def update(self):
         pass
@@ -160,6 +163,6 @@ class API(object):
             return False
 
 # Source https://stackoverflow.com/a/43750422
-def human_readable(bytes, units=[' bytes','KB','MB','GB','TB', 'PB', 'EB']):
+def human_readable(bytes, units=[' bytes','kB','MB','GB','TB', 'PB', 'EB']):
     """ Returns a human readable string reprentation of bytes"""
     return str(bytes) + units[0] if bytes < 1024 else human_readable(bytes>>10, units[1:])

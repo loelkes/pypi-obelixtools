@@ -6,9 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] 2019-10-4
-- Initial release
+## [1.1.1] 2019-10-06
+### Changed
+- .url and .format now have setters and getters.
+- setting .url resets .last_update to 0.
+- Setting .format checks if the format is supported and sets it to 'raw' if not.
+- Minor code structure changes.
+- Renamed .checkConnection() to check_connection()
 
-## [1.1.0] 2019-10-5
+## [1.1.0] 2019-10-05
 ### Added
 - Run the module directly with python -m obelixtools
+
+## [1.0.0] 2019-10-04
+- Initial release
