@@ -47,8 +47,8 @@ Fetched the data from the API if the age of the existing data in .content is old
 
 #### .check_connection(url='https://1.1.1.1', timeout=5) -> bool
 
-Fetches the given url and and returns True if the servers returns a status code 200 and False otherwise. Comprehensive log messages are passed to the loggin module.
+Fetches the given url and and returns True if the servers returns a status code 200 and False otherwise. Comprehensive log messages are passed to the logging module.
 
 #### .speedtest(url='http://speedtest.belwue.net/100M') -> bool
 
-Downloads the file provided at the given url and returns the speed in bytes per second. The logging module received a log message with humand readable speed (e.g. kB/s, MB/s...)
+Downloads the file provided at the given url and returns the speed in bytes per second. The logging module received a log message with human readable speed (e.g. kB/s, MB/s...)
